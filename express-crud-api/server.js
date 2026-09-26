@@ -28,6 +28,20 @@ app.get('/users/:id', (req, res) => {
     res.json(user);
 });
 
+
+  // add new user (CREATE)
+app.post('/users', (req, res) => {
+
+    const { name, email } = req.body;
+    const user = {
+        id: users.length + 1,
+        name,
+        email
+    };
+    users.push(user);
+    res.status(201).json(user);
+});
+
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
