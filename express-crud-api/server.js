@@ -33,6 +33,27 @@ app.get('/users/:id', (req, res) => {
 app.post('/users', (req, res) => {
 
     const { name, email } = req.body;
+
+    // Validate user input
+    if (!name) {
+        return res.status(400).json({
+            error: "Name is required"
+        });
+    }
+
+    if (!email) {
+        return res.status(400).json({
+            error: "Email is required"
+        });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({
+            error: "Invalid email format"
+        });
+    }
+
     const user = {
         id: users.length + 1,
         name,
@@ -41,6 +62,7 @@ app.post('/users', (req, res) => {
     users.push(user);
     res.status(201).json(user);
 });
+
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");
