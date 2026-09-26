@@ -21,6 +21,12 @@ app.get('/users', (req, res) => {
 });
 
 
+  // Get user by ID (READ)
+app.get('/users/:id', (req, res) => {
+    const user = users.find(u => u.id === parseInt(req.params.id));
+    if (!user) return res.status(404).send('User not found');
+    res.json(user);
+});
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");
