@@ -64,7 +64,7 @@ app.post('/users', (req, res) => {
 });
 
 
-//UPDATE (PUT/EDIT)
+//UPDATE (PUT... Generally used when you're replacing/updating the complete resource representation.)
 
 app.put("/users/:id", (req, res) => {
     const user = users.find((u) => u.id === parseInt(req.params.id));
@@ -100,6 +100,42 @@ app.put("/users/:id", (req, res) => {
     user.email = email;
     res.json(user);
 })
+
+
+ // PATCH Used for a partial update.
+
+app.patch("/users/:id", (req, res) => {
+    const user = users.find((u) => u.id === parseInt(req.params.id));
+
+    if (!user) {
+        return res.status(404).json({
+            error: "User not found"
+        });
+    }
+
+    const { name, email } = req.body;
+
+    if (name) {
+        user.name = name;
+        if (!name) {
+            return res.status(400).json({
+                error: "Name is required"
+            });
+        }
+    }
+
+    if (email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({
+                error: "Invalid email format"
+            });
+        }
+        user.email = email;
+    }
+
+    res.json(user);
+});
 
 
 app.listen(3000, () => {
