@@ -138,6 +138,26 @@ app.patch("/users/:id", (req, res) => {
 });
 
 
+//DELETE... remove user
+
+app.delete('/users/:id', (req, res) => {
+    const userIndex = users.findIndex((u) => u.id === parseInt(req.params.id));
+
+    if (userIndex === -1) {
+        return res.status(404).json({
+            error: "User not found"
+        });
+    }
+
+    const deleteUser = users.splice(userIndex, 1);
+
+    res.json({
+        message: "User deleted successfully",
+        user: deleteUser[0]
+    });
+});
+
+
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
